@@ -1,7 +1,5 @@
 const graphql = require('graphql');
 
-// Models
-
 const { RootQuery } = require('./query/query');
 const { Mutation } = require('./query/mutation');
 

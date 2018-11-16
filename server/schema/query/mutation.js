@@ -7,7 +7,7 @@ const {
 } = graphql;
 
 // Types
-const { UserType, ExpenseType, DebtType } = require('../types/types');
+const { UserType, ExpenseType, DebtType, MoneyOwedType } = require('../types/types');
 
 // Models
 const Debt = require('../../models/Debt');
@@ -85,6 +85,24 @@ const Mutation = new GraphQLObjectType({
         });
         await MoneyOwed.findOneAndUpdate({ lenderId, debtorId }, { $inc: { amount } });
         return debt.save();
+      }
+    },
+    payDebts: {
+      type: MoneyOwedType,
+      args: {
+        lenderId: { type: GraphQLID },
+        debtorId: { type: GraphQLID },
+        amount: { type: GraphQLFloat },
+      },
+      resolve(parent, args) {
+        let { lenderId, debtorId, amount } = args;
+        return MoneyOwed.findOneAndUpdate(
+          { lenderId: debtorId, debtorId: lenderId },
+          { $inc: { amount: amount } },
+          {
+            returnNewDocument: true,
+            // upsert: true, POSSIBLY IMPLEMENT THIS INSTEAD OF ADDING ROWS IN USER INSERTION
+          });
       }
     }
   }
