@@ -58,6 +58,28 @@ const UserType = new GraphQLObjectType({
       resolve(parent, args) {
         return Expense.find({ payerId: parent.id });
       }
+    },
+    lendedMoney: {
+      type: new GraphQLList(MoneyOwedType),
+      args: {
+        to: { type: GraphQLID }
+      },
+      resolve(parent, args) {
+        let { to = null } = args;
+        let params = to === null ? { lenderId: parent.id } : { lenderId: parent.id, debtorId: to };
+        return MoneyOwed.find(params);
+      }
+    },
+    debtedMoney: {
+      type: new GraphQLList(MoneyOwedType),
+      args: {
+        to: { type: GraphQLID }
+      },
+      resolve(parent, args) {
+        let { to = null } = args;
+        let params = to === null ? { debtorId: parent.id } : { debtorId: parent.id, lenderId: to };
+        return MoneyOwed.find(params);
+      }
     }
   })
 });
@@ -70,7 +92,7 @@ const ExpenseType = new GraphQLObjectType({
     payer: {
       type: UserType,
       resolve(parent, args) {
-        return User.find({ id: parent.payerId });
+        return User.findById(parent.payerId);
       }
     },
     amount: { type: GraphQLFloat },
@@ -86,19 +108,19 @@ const DebtType = new GraphQLObjectType({
     lender: {
       type: UserType,
       resolve(parent, args) {
-        return User.find({ id: parent.lenderId });
+        return User.findById(parent.lenderId);
       }
     },
     debtor: {
       type: UserType,
       resolve(parent, args) {
-        return User.find({ id: parent.debtorId });
+        return User.findById(parent.debtorId);
       }
     },
     expense: {
       type: ExpenseType,
       resolve(parent, args) {
-        return Expense.find({ id: parent.expenseId });
+        return Expense.findById(parent.expenseId);
       }
     },
     amount: { type: GraphQLFloat },
@@ -112,13 +134,13 @@ const MoneyOwedType = new GraphQLObjectType({
     lender: {
       type: UserType,
       resolve(parent, args) {
-        return User.find({ id: parent.lenderId });
+        return User.findById(parent.lenderId);
       }
     },
     debtor: {
       type: UserType,
       resolve(parent, args) {
-        return User.find({ id: parent.debtorId });
+        return User.findById(parent.debtorId);
       }
     },
     amount: { type: GraphQLFloat },
@@ -169,61 +191,12 @@ const RootQuery = new GraphQLObjectType({
         return Debt.find({});
       }
     },
-    moneyOwedPersonal: {
-      type: MoneyOwedType,
-      args: { lenderId: { type: GraphQLID }, debtorId: { type: GraphQLID } },
-      resolve(parent, args) {
-        let { lenderId, debtorId } = args;
-        let owed = MoneyOwed.findOne({ lenderId, debtorId });
-        let owedBack = MoneyOwed.findOne({ lenderId: debtorId, debtorId: lenderId });
-        if (owed.amount > owedBack.amount) {
-          return {
-            lenderId,
-            debtorId,
-            amount: owed.amount - owedBack.amount
-          }
-        } else {
-          return {
-            lenderId: debtorId,
-            debtorId: lenderId,
-            amount: owedBack.amount - owed.amount
-          }
-        }
-      }
-    },
     moneyOwed: {
       type: new GraphQLList(MoneyOwedType),
       resolve(parent, args) {
         return MoneyOwed.find({});
       }
     },
-    moneyOwedCalculated: {
-      type: GraphQLList(MoneyOwedType),
-      resolve(parent, args) {
-        let moneyOwedCopy = [...MoneyOwed.find({})];
-        let result = [];
-        for (const owe of moneyOwedCopy) {
-          let { lenderId, debtorId } = owe;
-          let owedBack = _.find(moneyOwedCopy, { lenderId: debtorId, debtorId: lenderId });
-          let index = _.indexOf(moneyOwedCopy, owedBack);
-          moneyOwedCopy.splice(index, 1);
-          if (owe.amount > owedBack.amount) {
-            result.push({
-              lenderId,
-              debtorId,
-              amount: owe.amount - owedBack.amount
-            });
-          } else {
-            result.push({
-              lenderId: debtorId,
-              debtorId: lenderId,
-              amount: owedBack.amount - owe.amount
-            });
-          }
-        }
-        return result;
-      }
-    }
   }
 });
 
@@ -236,12 +209,30 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: GraphQLString },
       },
-      resolve(parent, args) {
-        let { name } = args.name;
+      async resolve(parent, args) {
+        let { name } = args;
         let user = new User({
           name
         });
-        return user.save();
+        const otherUsers = await User.find({}).then(result => { return result.map(u => u.id) });
+        const newUser = await user.save();
+        if (otherUsers.length > 0) {
+          for (let i = 0; i < otherUsers.length; i++) {
+            let moneyOwed = new MoneyOwed({
+              lenderId: otherUsers[i],
+              debtorId: newUser.id,
+              amount: 0,
+            });
+            let moneyOwedBack = new MoneyOwed({
+              lenderId: newUser.id,
+              debtorId: otherUsers[i],
+              amount: 0,
+            });
+            moneyOwed.save();
+            moneyOwedBack.save();
+          }
+        }
+        return newUser;
       }
     },
     addExpense: {
@@ -269,7 +260,7 @@ const Mutation = new GraphQLObjectType({
         expenseId: { type: GraphQLID },
         amount: { type: GraphQLFloat },
       },
-      resolve(parent, args) {
+      async resolve(parent, args) {
         let { lenderId, debtorId, expenseId, amount } = args;
         let debt = new Debt({
           lenderId,
@@ -277,6 +268,7 @@ const Mutation = new GraphQLObjectType({
           expenseId,
           amount
         });
+        await MoneyOwed.findOneAndUpdate({ lenderId, debtorId }, { $inc: { amount } });
         return debt.save();
       }
     }
