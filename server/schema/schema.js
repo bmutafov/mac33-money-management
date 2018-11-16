@@ -1,6 +1,12 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 
+// Models
+const User = require('../models/User');
+const Expense = require('../models/Expense');
+const Debt = require('../models/Debt');
+const MoneyOwed = require('../models/MoneyOwed');
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -13,32 +19,32 @@ const {
 } = graphql;
 
 // DUMMY DATA
-let users = [
-  { id: '1', name: 'Boris' },
-  { id: '2', name: 'Boyan' },
-  { id: '3', name: 'Slav' },
-];
+// let users = [
+//   { id: '1', name: 'Boris' },
+//   { id: '2', name: 'Boyan' },
+//   { id: '3', name: 'Slav' },
+// ];
 
-let expenses = [
-  { id: '1', payerId: '1', amount: 23, date: new Date('1-1-2018') },
-  { id: '2', payerId: '1', amount: 44, date: new Date('1-2-2018') },
-  { id: '3', payerId: '2', amount: 12, date: new Date('1-3-2018') },
-]
+// let expenses = [
+//   { id: '1', payerId: '1', amount: 23, date: new Date('1-1-2018') },
+//   { id: '2', payerId: '1', amount: 44, date: new Date('1-2-2018') },
+//   { id: '3', payerId: '2', amount: 12, date: new Date('1-3-2018') },
+// ]
 
-let debts = [
-  { id: '1', lenderId: '1', debtorId: '3', expenseId: '1', amount: '5' },
-  { id: '2', lenderId: '1', debtorId: '2', expenseId: '1', amount: '6' },
-  { id: '3', lenderId: '2', debtorId: '3', expenseId: '3', amount: '2' },
-]
+// let debts = [
+//   { id: '1', lenderId: '1', debtorId: '3', expenseId: '1', amount: '5' },
+//   { id: '2', lenderId: '1', debtorId: '2', expenseId: '1', amount: '6' },
+//   { id: '3', lenderId: '2', debtorId: '3', expenseId: '3', amount: '2' },
+// ]
 
-let moneyOwed = [
-  { lenderId: '1', debtorId: '2', amount: 9 },
-  { lenderId: '2', debtorId: '1', amount: 6 },
-  { lenderId: '1', debtorId: '3', amount: 13 },
-  { lenderId: '3', debtorId: '1', amount: 66 },
-  { lenderId: '2', debtorId: '3', amount: 2 },
-  { lenderId: '3', debtorId: '2', amount: 0 },
-]
+// let moneyOwed = [
+//   { lenderId: '1', debtorId: '2', amount: 9 },
+//   { lenderId: '2', debtorId: '1', amount: 6 },
+//   { lenderId: '1', debtorId: '3', amount: 13 },
+//   { lenderId: '3', debtorId: '1', amount: 66 },
+//   { lenderId: '2', debtorId: '3', amount: 2 },
+//   { lenderId: '3', debtorId: '2', amount: 0 },
+// ]
 // END DUMMY DATA
 
 const UserType = new GraphQLObjectType({
@@ -50,7 +56,7 @@ const UserType = new GraphQLObjectType({
     expenses: {
       type: new GraphQLList(ExpenseType),
       resolve(parent, args) {
-        return _.filter(expenses, { payerId: parent.id });
+        return Expense.find({ payerId: parent.id });
       }
     }
   })
@@ -64,7 +70,7 @@ const ExpenseType = new GraphQLObjectType({
     payer: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(users, { id: parent.payerId });
+        return User.find({ id: parent.payerId });
       }
     },
     amount: { type: GraphQLFloat },
@@ -80,19 +86,19 @@ const DebtType = new GraphQLObjectType({
     lender: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(users, { id: parent.lenderId });
+        return User.find({ id: parent.lenderId });
       }
     },
     debtor: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(users, { id: parent.debtorId });
+        return User.find({ id: parent.debtorId });
       }
     },
     expense: {
       type: ExpenseType,
       resolve(parent, args) {
-        return _.find(expenses, { id: parent.expenseId });
+        return Expense.find({ id: parent.expenseId });
       }
     },
     amount: { type: GraphQLFloat },
@@ -106,13 +112,13 @@ const MoneyOwedType = new GraphQLObjectType({
     lender: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(users, { id: parent.lenderId });
+        return User.find({ id: parent.lenderId });
       }
     },
     debtor: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(users, { id: parent.debtorId });
+        return User.find({ id: parent.debtorId });
       }
     },
     amount: { type: GraphQLFloat },
@@ -127,14 +133,14 @@ const RootQuery = new GraphQLObjectType({
       type: UserType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(users, { id: args.id });
+        return User.findById(args.id);
       }
     },
     expense: {
       type: ExpenseType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(expenses, { id: args.id });
+        return Expense.findById(args.id);
       }
     },
     debt: {
@@ -142,25 +148,25 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID }, lenderId: { type: GraphQLID }, debtorId: { type: GraphQLID } },
       resolve(parent, args) {
         let params = { id = null, lenderId = null, debtorId = null } = args;
-        return _.filter(debts, params);
+        return Debt.find(params);
       }
     },
     expenses: {
       type: new GraphQLList(ExpenseType),
       resolve(parent, args) {
-        return _.filter(expenses, {});
+        return Expense.find({});
       }
     },
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
-        return _.filter(users, {});
+        return User.find({});
       }
     },
     debts: {
       type: new GraphQLList(DebtType),
       resolve(parent, args) {
-        return _.filter(debts, {});
+        return Debt.find({});
       }
     },
     moneyOwedPersonal: {
@@ -168,8 +174,8 @@ const RootQuery = new GraphQLObjectType({
       args: { lenderId: { type: GraphQLID }, debtorId: { type: GraphQLID } },
       resolve(parent, args) {
         let { lenderId, debtorId } = args;
-        let owed = _.find(moneyOwed, { lenderId, debtorId });
-        let owedBack = _.find(moneyOwed, { lenderId: debtorId, debtorId: lenderId });
+        let owed = MoneyOwed.findOne({ lenderId, debtorId });
+        let owedBack = MoneyOwed.findOne({ lenderId: debtorId, debtorId: lenderId });
         if (owed.amount > owedBack.amount) {
           return {
             lenderId,
@@ -188,13 +194,13 @@ const RootQuery = new GraphQLObjectType({
     moneyOwed: {
       type: new GraphQLList(MoneyOwedType),
       resolve(parent, args) {
-        return _.filter(moneyOwed, {});
+        return MoneyOwed.find({});
       }
     },
     moneyOwedCalculated: {
       type: GraphQLList(MoneyOwedType),
       resolve(parent, args) {
-        let moneyOwedCopy = [...moneyOwed];
+        let moneyOwedCopy = [...MoneyOwed.find({})];
         let result = [];
         for (const owe of moneyOwedCopy) {
           let { lenderId, debtorId } = owe;
@@ -221,6 +227,63 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Used to mutate data in the database',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        name: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        let { name } = args.name;
+        let user = new User({
+          name
+        });
+        return user.save();
+      }
+    },
+    addExpense: {
+      type: ExpenseType,
+      args: {
+        payerId: { type: GraphQLID },
+        amount: { type: GraphQLFloat },
+        date: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        let { payerId, amount, date } = args;
+        let expense = new Expense({
+          payerId,
+          amount,
+          date
+        });
+        return expense.save();
+      }
+    },
+    addDebt: {
+      type: DebtType,
+      args: {
+        lenderId: { type: GraphQLID },
+        debtorId: { type: GraphQLID },
+        expenseId: { type: GraphQLID },
+        amount: { type: GraphQLFloat },
+      },
+      resolve(parent, args) {
+        let { lenderId, debtorId, expenseId, amount } = args;
+        let debt = new Debt({
+          lenderId,
+          debtorId,
+          expenseId,
+          amount
+        });
+        return debt.save();
+      }
+    }
+  }
+})
+
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation: Mutation,
 })
