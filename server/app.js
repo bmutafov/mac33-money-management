@@ -1,10 +1,11 @@
+'use strict';
 const express = require('express');
 const mongoose = require('mongoose');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 
 const app = express();
-const _PORT = 5000;
+const PORT = process.env.PORT || 8080;
 
 // connect to mongo db
 mongoose.connect('mongodb://quintero:test123@ds061938.mlab.com:61938/money', { useNewUrlParser: true });
@@ -21,6 +22,6 @@ app.use('/graphiql', graphqlHTTP({
 
 
 // open a listening port
-app.listen(_PORT, () => {
-  console.log('now listening for requests on port ' + _PORT);
+app.listen(PORT, () => {
+  console.log(`now listening for requests on port ${PORT}`);
 });
