@@ -5,6 +5,8 @@ import { ApolloProvider } from 'react-apollo';
 // Components
 import AddUser from './components/AddUser';
 import DisplayUsers from './components/DisplayUsers';
+import AddExpense from './components/AddExpense';
+import DisplayExpenses from './components/DisplayExpenses';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -19,6 +21,8 @@ class App extends Component {
           <h1>Mac & Cheese money management v2</h1>
           <AddUser />
           <DisplayUsers />
+          <AddExpense />
+          <DisplayExpenses />
         </div>
       </ApolloProvider>
     );
