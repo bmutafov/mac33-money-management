@@ -6,19 +6,26 @@ import { getMoneyOwedQuery } from '../queries/queries';
 
 class DisplayMoneyOwed extends Component {
   parseData(data) {
+    console.log("data: ", data);
     let dataCpy = [...data];
     let res = [];
     for (let i = 0; i < dataCpy.length; i++) {
       // make a copy and find the owed back money
       let current = dataCpy[i];
-      let moneyOwedBack = dataCpy.find(m => m.lender.id === current.debtor.id && m.debtor.id === current.lender.id);
+      let moneyOwedBack = dataCpy.find(m => m.lender.id === current.debtor.id && m.debtor.id === current.lender.id) || null;
 
       // calculate the total amount and who owes to who
       // and if the money owed back amount is greater skip and do the action
       // on the other element
-      if (current.amount > moneyOwedBack.amount) {
-        current.amount = Math.round((current.amount - moneyOwedBack.amount) * 100) / 100;
+      if (moneyOwedBack === null) {
         res.push(current);
+      } else if (current.amount > moneyOwedBack.amount) {
+        res.push({
+          id: current.id,
+          lender: current.lender,
+          debtor: current.debtor,
+          amount: Math.round((current.amount - moneyOwedBack.amount) * 100) / 100,
+        });
 
         // delete other element from copy to avoid doubling the result element
         dataCpy.splice(dataCpy.indexOf(moneyOwedBack), 1);

@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express');
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const cors = require('cors');
@@ -13,7 +14,7 @@ app.use(cors());
 
 
 // connect to mongo db
-mongoose.connect('mongodb://quintero:test123@ds061938.mlab.com:61938/money', { useNewUrlParser: true });
+mongoose.connect('mongodb://quintero:test123@ds063769.mlab.com:63769/money_management', { useNewUrlParser: true });
 mongoose.connection
   .once('open', () => console.log('Connected established to mLab database. Can you believe it?'))
   .on('error', (e) => console.log('Connection error!', e));

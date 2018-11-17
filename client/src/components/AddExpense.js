@@ -33,7 +33,6 @@ class AddExpense extends Component {
     }).then((result) => {
       let expense = result.data.addExpense;
       let { users } = this.props.getUsersQuery;
-      console.log(expense, users);
       users = users.filter(u => u.id !== expense.payer.id);
       for (let i = 0; i < users.length; i++) {
         this.props.addDebtMutation({
