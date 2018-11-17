@@ -60,7 +60,7 @@ class PayDebt extends Component {
                   startAdornment: <InputAdornment position="start">€</InputAdornment>,
                 }}
               /></td>
-              <td><Button variant="contained" color="primary"> Pay Debt </Button></td>
+              <td><Button variant="contained" color="primary" type="submit"> Pay Debt </Button></td>
             </tr>
           </tbody>
         </table>

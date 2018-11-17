@@ -29,24 +29,24 @@ const Mutation = new GraphQLObjectType({
         let user = new User({
           name
         });
-        // const otherUsers = await User.find({}).then(result => { return result.map(u => u.id) });
-        // const newUser = await user.save();
-        // if (otherUsers.length > 0) {
-        //   for (let i = 0; i < otherUsers.length; i++) {
-        //     let moneyOwed = new MoneyOwed({
-        //       lenderId: otherUsers[i],
-        //       debtorId: newUser.id,
-        //       amount: 0,
-        //     });
-        //     let moneyOwedBack = new MoneyOwed({
-        //       lenderId: newUser.id,
-        //       debtorId: otherUsers[i],
-        //       amount: 0,
-        //     });
-        //     moneyOwed.save();
-        //     moneyOwedBack.save();
-        //   }
-        // }
+        const otherUsers = await User.find({}).then(result => { return result.map(u => u.id) });
+        const newUser = await user.save();
+        if (otherUsers.length > 0) {
+          for (let i = 0; i < otherUsers.length; i++) {
+            let moneyOwed = new MoneyOwed({
+              lenderId: otherUsers[i],
+              debtorId: newUser.id,
+              amount: 0,
+            });
+            let moneyOwedBack = new MoneyOwed({
+              lenderId: newUser.id,
+              debtorId: otherUsers[i],
+              amount: 0,
+            });
+            moneyOwed.save();
+            moneyOwedBack.save();
+          }
+        }
         return user.save();
       }
     },
@@ -101,7 +101,7 @@ const Mutation = new GraphQLObjectType({
           { $inc: { "amount": amount } },
           {
             new: true,
-            upsert: true,
+            //upsert: true,
           });
       }
     }

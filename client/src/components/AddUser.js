@@ -45,7 +45,7 @@ class AddUser extends Component {
                   })}
                 />
               </td>
-              <td><Button variant="contained" color="primary"> Add user </Button></td>
+              <td><Button variant="contained" color="primary" type="submit"> Add user </Button></td>
             </tr>
           </tbody>
         </table>

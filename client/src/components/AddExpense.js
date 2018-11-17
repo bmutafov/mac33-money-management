@@ -36,7 +36,6 @@ class AddExpense extends Component {
       },
       refetchQueries: [
         { query: getExpensesQuery },
-        { query: getMoneyOwedQuery },
       ]
     }).then((result) => {
       let expense = result.data.addExpense;
@@ -51,7 +50,8 @@ class AddExpense extends Component {
             amount: Math.round(parseFloat(expense.amount / (users.length + 1)) * 100) / 100,
           },
           refetchQueries: i === users.length - 1 ? [
-            { query: getDebtsQuery }
+            { query: getDebtsQuery },
+            { query: getMoneyOwedQuery },
           ] : undefined,
         })
       }

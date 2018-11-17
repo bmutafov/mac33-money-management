@@ -44,7 +44,7 @@ class App extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={6} spacing={8}>
+            <Grid item xs={6}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper><DisplayMoneyOwed /></Paper>
