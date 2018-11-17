@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgb(211, 211, 211);
 }
 
 code {
@@ -15,4 +16,9 @@ code {
 
 .orange-avatar {
   background: orange;
+}
+
+.heading {
+  text-align: center !important;
+  padding-top: 10px !important;
 }

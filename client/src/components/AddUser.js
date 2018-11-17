@@ -38,6 +38,8 @@ class AddUser extends Component {
                 <TextField
                   label="Username"
                   variant="outlined"
+                  margin="dense"
+                  helperText="The name of the user"
                   onChange={(e) => this.setState({
                     name: e.target.value
                   })}

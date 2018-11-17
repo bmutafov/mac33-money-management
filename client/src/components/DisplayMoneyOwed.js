@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
+// Material UI
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import ArrowRightAlt from '@material-ui/icons/ArrowForward';
+import Typography from '@material-ui/core/Typography';
+
 // Import queries
 import { getMoneyOwedQuery } from '../queries/queries';
 
@@ -44,7 +52,13 @@ class DisplayMoneyOwed extends Component {
       let parsedData = this.parseData(data.moneyOwed);
       return parsedData.map(moneyOwed => {
         return (
-          <li key={moneyOwed.id}> <b>{moneyOwed.debtor.name}</b> owes <b>{moneyOwed.lender.name}</b> a total of {moneyOwed.amount} euros</li>
+          <ListItem key={moneyOwed.id}>
+            <Avatar>{moneyOwed.debtor.name.charAt(0)}</Avatar>
+            <ArrowRightAlt />
+            <Avatar>{moneyOwed.lender.name.charAt(0)}</Avatar>
+
+            <ListItemText primary={`${moneyOwed.amount}€ `} secondary={`${moneyOwed.debtor.name} to ${moneyOwed.lender.name}`} />
+          </ListItem>
         )
       });
     }
@@ -53,9 +67,12 @@ class DisplayMoneyOwed extends Component {
   render() {
     return (
       <div className="display-money-owed">
-        <ul>
+        <Typography variant="h5" gutterBottom className="heading">
+          Total money owed
+        </Typography>
+        <List>
           {this.displayMoneyOwed()}
-        </ul>
+        </List>
       </div>
     );
   }

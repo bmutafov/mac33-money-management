@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
+// Material UI
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+
+
 // Import queries
 import { getExpensesQuery } from '../queries/queries';
-
 import { timestampToDate } from '../helpers/helpers';
 
 class DisplayExpenses extends Component {
@@ -16,7 +24,15 @@ class DisplayExpenses extends Component {
     } else {
       return data.expenses.map(expense => {
         return (
-          <li key={expense.id}> <b>{expense.payer.name}</b> paid {expense.amount} on {timestampToDate(expense.date)}</li>
+          <ListItem key={expense.id}>
+            <ListItemIcon>
+              <Avatar>{expense.payer.name.charAt(0)}</Avatar>
+            </ListItemIcon>
+            <ListItemText
+              primary={`${expense.payer.name} paid ${expense.amount}€`}
+              secondary={timestampToDate(expense.date)}
+            />
+          </ListItem>
         )
       });
     }
@@ -25,9 +41,12 @@ class DisplayExpenses extends Component {
   render() {
     return (
       <div className="display-expenses">
-        <ul>
+        <Typography variant="h5" gutterBottom className="heading">
+          Prvioues expenses
+        </Typography>
+        <List>
           {this.displayExpenses()}
-        </ul>
+        </List>
       </div>
     );
   }
