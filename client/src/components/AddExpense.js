@@ -37,6 +37,7 @@ class AddExpense extends Component {
       },
       refetchQueries: [
         { query: getExpensesQuery },
+        { query: getMoneyOwedQuery },
       ]
     }).then((result) => {
       let expense = result.data.addExpense;
