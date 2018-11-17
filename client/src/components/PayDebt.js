@@ -55,7 +55,7 @@ class PayDebt extends Component {
                 margin="normal"
                 helperText="The amount of money given"
                 value={this.state.amount}
-                onChange={(e) => { this.setState({ amount: parseFloat(e.target.value) }) }}
+                onChange={(e) => { this.setState({ amount: e.target.value }) }}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">€</InputAdornment>,
                 }}
