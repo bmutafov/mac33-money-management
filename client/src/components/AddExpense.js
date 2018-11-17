@@ -5,12 +5,10 @@ import { graphql, compose } from 'react-apollo';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
 
 // queries
 import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
 
-import { getUsersAsOptions } from '../helpers/helpers'
 import UserSelect from './UserSelect';
 
 class AddExpense extends Component {
@@ -67,7 +65,7 @@ class AddExpense extends Component {
           <tbody>
             <tr>
               <td>
-                <UserSelect label="Payer" helperText="Select who paid the expense" handler={(e) => { this.state.payerId = e.target.value }} />
+                <UserSelect label="Payer" helperText="Select who paid the expense" handler={(e) => { this.setState({ payerId: e.target.value }) }} />
               </td>
               <td>
                 <TextField

@@ -14,7 +14,6 @@ import { getMoneyOwedQuery } from '../queries/queries';
 
 class DisplayMoneyOwed extends Component {
   parseData(data) {
-    console.log("data: ", data);
     let dataCpy = [...data];
     let res = [];
     for (let i = 0; i < dataCpy.length; i++) {

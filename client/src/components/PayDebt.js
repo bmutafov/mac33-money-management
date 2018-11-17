@@ -44,10 +44,10 @@ class PayDebt extends Component {
           <tbody>
             <tr>
               <td>
-                <UserSelect label="Debtor" helperText="Select who gives money" handler={(e) => { this.state.debtorId = e.target.value }} />
+                <UserSelect label="Debtor" helperText="Select who gives money" handler={(e) => { this.setState({ debtorId: e.target.value }) }} />
               </td>
               <td>
-                <UserSelect label="Lender" helperText="Select who recieves money" handler={(e) => { this.state.lenderId = e.target.value }} />
+                <UserSelect label="Lender" helperText="Select who recieves money" handler={(e) => { this.setState({ lenderId: e.target.value }) }} />
               </td>
               <td><TextField
                 variant="outlined"
