@@ -97,6 +97,7 @@ const MoneyOwedType = new GraphQLObjectType({
   name: 'MoneyOwed',
   description: 'Total money owed person to person',
   fields: () => ({
+    id: { type: GraphQLID },
     lender: {
       type: UserType,
       resolve(parent, args) {

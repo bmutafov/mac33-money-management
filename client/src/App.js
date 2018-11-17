@@ -7,6 +7,8 @@ import AddUser from './components/AddUser';
 import DisplayUsers from './components/DisplayUsers';
 import AddExpense from './components/AddExpense';
 import DisplayExpenses from './components/DisplayExpenses';
+import DisplayDebts from './components/DisplayDebts';
+import DisplayMoneyOwed from './components/DisplayMoneyOwed';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -23,6 +25,8 @@ class App extends Component {
           <DisplayUsers />
           <AddExpense />
           <DisplayExpenses />
+          <DisplayDebts />
+          <DisplayMoneyOwed />
         </div>
       </ApolloProvider>
     );

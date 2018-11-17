@@ -4,12 +4,9 @@ import { graphql } from 'react-apollo';
 // Import queries
 import { getExpensesQuery } from '../queries/queries';
 
-class DisplayExpenses extends Component {
-  timestampToDate(timestamp) {
-    let date = new Date(parseFloat(timestamp * 1000));
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} at ${date.getHours()}:${date.getMinutes()}`;
-  }
+import { timestampToDate } from '../helpers/helpers';
 
+class DisplayExpenses extends Component {
   displayExpenses() {
     let { data } = this.props;
     if (data.loading) {
@@ -19,7 +16,7 @@ class DisplayExpenses extends Component {
     } else {
       return data.expenses.map(expense => {
         return (
-          <li key={expense.id}> <b>{expense.payer.name}</b> paid {expense.amount} on {this.timestampToDate(expense.date)}</li>
+          <li key={expense.id}> <b>{expense.payer.name}</b> paid {expense.amount} on {timestampToDate(expense.date)}</li>
         )
       });
     }

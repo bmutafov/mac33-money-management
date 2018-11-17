@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
 // queries
-import { getUsersQuery, addExpenseMutation, getExpensesQuery } from '../queries/queries';
+import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
 
 class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      payerId: '',
+      payerId: 'default',
       amount: 0,
     }
   }
@@ -26,6 +26,9 @@ class AddExpense extends Component {
 
   submitForm(e) {
     e.preventDefault();
+    if (this.state.payerId === "default") {
+      return;
+    }
     this.props.addExpenseMutation({
       variables: {
         payerId: this.state.payerId,
@@ -35,12 +38,27 @@ class AddExpense extends Component {
       refetchQueries: [
         { query: getExpensesQuery },
       ]
-    })
-  }
-
-  today() {
-    let date = new Date();
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    }).then((result) => {
+      let expense = result.data.addExpense;
+      let { users } = this.props.getUsersQuery;
+      console.log(expense, users);
+      users = users.filter(u => u.id !== expense.payer.id);
+      for (let i = 0; i < users.length; i++) {
+        this.props.addDebtMutation({
+          variables: {
+            lenderId: expense.payer.id,
+            debtorId: users[i].id,
+            expenseId: expense.id,
+            amount: Math.round(parseFloat(expense.amount / (users.length + 1)) * 100) / 100,
+          },
+          refetchQueries: i === users.length - 1 ? [
+            { query: getDebtsQuery }
+          ] : undefined,
+        })
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   render() {
@@ -50,7 +68,12 @@ class AddExpense extends Component {
           <tbody>
             <tr>
               <td>Payer:</td>
-              <td><select onChange={(e) => { this.setState({ payerId: e.target.value }) }}>{this.displayUsers()}</select></td>
+              <td>
+                <select onChange={(e) => { this.setState({ payerId: e.target.value }) }}>
+                  <option value="default">Select who paid the expense</option>
+                  {this.displayUsers()}
+                </select>
+              </td>
             </tr>
             <tr>
               <td>Amount:</td>
@@ -70,4 +93,6 @@ class AddExpense extends Component {
 export default compose(
   graphql(getUsersQuery, { name: 'getUsersQuery' }),
   graphql(addExpenseMutation, { name: 'addExpenseMutation' }),
+  graphql(addDebtMutation, { name: 'addDebtMutation' }),
+  graphql(getMoneyOwedQuery, { name: 'getMoneyOwedQuery' }),
 )(AddExpense);
