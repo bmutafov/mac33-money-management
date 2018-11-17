@@ -4,23 +4,14 @@ import { graphql, compose } from 'react-apollo';
 // queries
 import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
 
+import { getUsersAsOptions } from '../helpers/helpers'
+
 class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
       payerId: 'default',
       amount: 0,
-    }
-  }
-
-  displayUsers() {
-    let { getUsersQuery } = this.props;
-    if (getUsersQuery.loading) {
-      return (<option>loading users...</option>);
-    } else {
-      return getUsersQuery.users.map(user => {
-        return (<option key={user.id} value={user.id}>{user.name}</option>)
-      });
     }
   }
 
@@ -71,8 +62,11 @@ class AddExpense extends Component {
               <td>Payer:</td>
               <td>
                 <select onChange={(e) => { this.setState({ payerId: e.target.value }) }}>
+                  {/* default option */}
                   <option value="default">Select who paid the expense</option>
-                  {this.displayUsers()}
+
+                  {/* load all users */}
+                  {getUsersAsOptions(this.props)}
                 </select>
               </td>
             </tr>

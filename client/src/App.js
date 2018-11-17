@@ -9,6 +9,7 @@ import AddExpense from './components/AddExpense';
 import DisplayExpenses from './components/DisplayExpenses';
 import DisplayDebts from './components/DisplayDebts';
 import DisplayMoneyOwed from './components/DisplayMoneyOwed';
+import PayDebt from './components/PayDebt';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -27,6 +28,7 @@ class App extends Component {
           <DisplayExpenses />
           <DisplayDebts />
           <DisplayMoneyOwed />
+          <PayDebt />
         </div>
       </ApolloProvider>
     );

@@ -1,5 +1,6 @@
 import { gql } from 'apollo-boost';
 
+// QUERIES
 const getUsersQuery = gql`
   {
     users {
@@ -60,6 +61,7 @@ const getMoneyOwedQuery = gql`
   }
 `;
 
+// MUTATIONS
 const addUserMutation = gql`
   mutation AddUser($name: String!){
     addUser(name: $name) {
@@ -82,9 +84,23 @@ const addExpenseMutation = gql`
 `;
 
 const addDebtMutation = gql`
-  mutation AddDebt($lenderId: ID!, $debtorId: ID!, $expenseId: ID!, $amount: Float){
+  mutation AddDebt($lenderId: ID!, $debtorId: ID!, $expenseId: ID!, $amount: Float!){
     addDebt(lenderId: $lenderId, debtorId: $debtorId, expenseId: $expenseId, amount: $amount) {
       id
+    }
+  }
+`;
+
+const payDebtMutation = gql`
+  mutation PayDebt($lenderId: ID!, $debtorId: ID!, $amount: Float!) {
+    payDebts(lenderId: $lenderId, debtorId: $debtorId, amount: $amount) {
+      lender {
+        name
+      }
+      debtor {
+        name
+      }
+      amount
     }
   }
 `;
@@ -100,4 +116,5 @@ export {
   addUserMutation,
   addExpenseMutation,
   addDebtMutation,
+  payDebtMutation,
 };
