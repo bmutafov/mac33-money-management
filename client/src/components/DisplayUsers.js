@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+// import FolderIcon from '@material-ui/icons/Folder';
+
 // Import queries
 import { getUsersQuery } from '../queries/queries';
 
@@ -14,19 +21,26 @@ class DisplayUsers extends Component {
     } else {
       return data.users.map(user => {
         return (
-          <li key={user.id}>{user.name}</li>
+          <ListItem key={user.id}>
+            <ListItemIcon>
+              <Avatar>{user.name.charAt(0)}</Avatar>
+            </ListItemIcon>
+            <ListItemText
+              primary={`${user.name}`}
+              secondary={user.id}
+            />
+          </ListItem>
         )
       });
     }
   }
 
+
   render() {
     return (
-      <div className="display-users">
-        <ul>
-          {this.displayUsers()}
-        </ul>
-      </div>
+      <List>
+        {this.displayUsers()}
+      </List>
     );
   }
 }

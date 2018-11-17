@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
+// material ui
+import UserSelect from './UserSelect';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button';
+
 // queries
 import { getUsersQuery, payDebtMutation, getMoneyOwedQuery } from '../queries/queries';
-
-import { getUsersAsOptions } from '../helpers/helpers';
 
 class PayDebt extends Component {
   constructor(props) {
@@ -39,36 +43,24 @@ class PayDebt extends Component {
         <table>
           <tbody>
             <tr>
-              <td>Debtor:</td>
               <td>
-                <select onChange={(e) => { this.setState({ debtorId: e.target.value }) }}>
-                  {/* default option */}
-                  <option value="default">Select who gives money</option>
-
-                  {/* load all users */}
-                  {getUsersAsOptions(this.props)}
-                </select>
+                <UserSelect label="Debtor" helperText="Select who gives money" handler={(e) => { this.state.debtorId = e.target.value }} />
               </td>
-            </tr>
-            <tr>
-              <td>Lender:</td>
               <td>
-                <select onChange={(e) => { this.setState({ lenderId: e.target.value }) }}>
-                  {/* default option */}
-                  <option value="default">Select who gets the money</option>
-
-                  {/* load all users */}
-                  {getUsersAsOptions(this.props)}
-                </select>
+                <UserSelect label="Lender" helperText="Select who recieves money" handler={(e) => { this.state.lenderId = e.target.value }} />
               </td>
-            </tr>
-            <tr>
-              <td>Amount:</td>
-              <td><input type="text" onChange={(e) => { this.setState({ amount: e.target.value }) }} /></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><button> Pay Debt </button></td>
+              <td><TextField
+                variant="outlined"
+                label="Amount"
+                margin="normal"
+                helperText="The amount of money given"
+                value={this.state.amount}
+                onChange={(e) => { this.setState({ amount: parseFloat(e.target.value) }) }}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                }}
+              /></td>
+              <td><Button variant="contained" color="primary"> Pay Debt </Button></td>
             </tr>
           </tbody>
         </table>

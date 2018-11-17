@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
+// style & material UI
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
 // queries
 import { addUserMutation, getUsersQuery } from '../queries/queries';
 
@@ -30,14 +34,16 @@ class AddUser extends Component {
         <table>
           <tbody>
             <tr>
-              <td>User name:</td>
-              <td><input type="text" onChange={(e) => this.setState({
-                name: e.target.value
-              })} /></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><button> Add user</button></td>
+              <td>
+                <TextField
+                  label="Username"
+                  variant="outlined"
+                  onChange={(e) => this.setState({
+                    name: e.target.value
+                  })}
+                />
+              </td>
+              <td><Button variant="contained" color="primary"> Add user </Button></td>
             </tr>
           </tbody>
         </table>
@@ -47,3 +53,4 @@ class AddUser extends Component {
 }
 
 export default graphql(addUserMutation, { name: 'addUserMutation' })(AddUser);
+

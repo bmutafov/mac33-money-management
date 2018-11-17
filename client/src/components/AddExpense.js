@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
+// material ui
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+
 // queries
 import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
 
 import { getUsersAsOptions } from '../helpers/helpers'
+import UserSelect from './UserSelect';
 
 class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      payerName: '',
       payerId: 'default',
       amount: 0,
     }
@@ -23,7 +31,7 @@ class AddExpense extends Component {
     this.props.addExpenseMutation({
       variables: {
         payerId: this.state.payerId,
-        amount: this.state.amount,
+        amount: parseFloat(this.state.amount),
         date: Math.round(new Date().getTime() / 1000).toString(),
       },
       refetchQueries: [
@@ -58,24 +66,23 @@ class AddExpense extends Component {
         <table>
           <tbody>
             <tr>
-              <td>Payer:</td>
               <td>
-                <select onChange={(e) => { this.setState({ payerId: e.target.value }) }}>
-                  {/* default option */}
-                  <option value="default">Select who paid the expense</option>
-
-                  {/* load all users */}
-                  {getUsersAsOptions(this.props)}
-                </select>
+                <UserSelect label="Payer" helperText="Select who paid the expense" handler={(e) => { this.state.payerId = e.target.value }} />
               </td>
-            </tr>
-            <tr>
-              <td>Amount:</td>
-              <td><input type="text" onChange={(e) => { this.setState({ amount: parseFloat(e.target.value) }) }} /></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><button> Add Expense </button></td>
+              <td>
+                <TextField
+                  variant="outlined"
+                  label="Amount"
+                  margin="normal"
+                  helperText="The total amount of the expense"
+                  value={this.state.amount}
+                  onChange={(e) => { this.setState({ amount: e.target.value }) }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                  }}
+                />
+              </td>
+              <td><Button variant="contained" color="primary" type="submit"> Add Expense </Button></td>
             </tr>
           </tbody>
         </table>

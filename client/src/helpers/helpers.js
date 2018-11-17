@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export const timestampToDate = (timestamp) => {
   let date = new Date(parseFloat(timestamp * 1000));
@@ -13,10 +14,14 @@ export const today = () => {
 export const getUsersAsOptions = (props) => {
   let { getUsersQuery } = props;
   if (getUsersQuery.loading) {
-    return (<option>loading users...</option>);
+    return (<MenuItem>loading users...</MenuItem>);
   } else {
     return getUsersQuery.users.map(user => {
-      return (<option key={user.id} value={user.id}>{user.name}</option>)
+      return (
+        <MenuItem key={user.id} value={user.id}>
+          {user.name}
+        </MenuItem>
+      )
     });
   }
 }
