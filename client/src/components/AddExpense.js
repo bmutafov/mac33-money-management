@@ -6,12 +6,16 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
 
+
+
 // queries
 import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
 
 import UserSelect from './UserSelect';
+import ExpenseDialog from './ExpenseDialog';
 
 class AddExpense extends Component {
+  payingUsers = [];
   constructor(props) {
     super(props);
     this.state = {
@@ -19,50 +23,24 @@ class AddExpense extends Component {
       payerId: 'default',
       amount: 0,
       description: '',
+      open: false,
     }
   }
 
-  submitForm(e) {
-    e.preventDefault();
+  handleClickOpen = () => {
     if (this.state.payerId === "default") {
       return;
     }
-    this.props.addExpenseMutation({
-      variables: {
-        payerId: this.state.payerId,
-        amount: parseFloat(this.state.amount),
-        date: Math.round(new Date().getTime() / 1000).toString(),
-        description: this.state.description,
-      },
-      refetchQueries: [
-        { query: getExpensesQuery },
-      ]
-    }).then((result) => {
-      let expense = result.data.addExpense;
-      let { users } = this.props.getUsersQuery;
-      users = users.filter(u => u.id !== expense.payer.id);
-      for (let i = 0; i < users.length; i++) {
-        this.props.addDebtMutation({
-          variables: {
-            lenderId: expense.payer.id,
-            debtorId: users[i].id,
-            expenseId: expense.id,
-            amount: Math.round(parseFloat(expense.amount / (users.length + 1)) * 100) / 100,
-          },
-          refetchQueries: i === users.length - 1 ? [
-            { query: getDebtsQuery },
-            { query: getMoneyOwedQuery },
-          ] : undefined,
-        })
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
+    this.setState({ open: true });
+  };
 
-  render() {
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  render = () => {
     return (
-      <form className="add-expense" onSubmit={this.submitForm.bind(this)}>
+      <form className="add-expense">{/*onSubmit={this.submitForm.bind(this)}*/}
         <table>
           <tbody>
             <tr>
@@ -106,11 +84,15 @@ class AddExpense extends Component {
             </tr>
             <tr>
               <td style={{ textAlign: 'right' }}>
-                <Button variant="contained" color="primary" type="submit"> Add Expense </Button>
+                <Button variant="contained" color="primary" onClick={this.handleClickOpen} > Add Expense </Button>
               </td>
             </tr>
           </tbody>
         </table>
+        <ExpenseDialog
+          formState={this.state}
+          handleClose={this.handleClose}
+        />
       </form>
     );
   }
