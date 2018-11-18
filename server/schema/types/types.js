@@ -63,6 +63,7 @@ const ExpenseType = new GraphQLObjectType({
     },
     amount: { type: GraphQLFloat },
     date: { type: GraphQLString },
+    description: { type: GraphQLString },
   })
 });
 

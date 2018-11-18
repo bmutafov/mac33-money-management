@@ -56,13 +56,15 @@ const Mutation = new GraphQLObjectType({
         payerId: { type: GraphQLID },
         amount: { type: GraphQLFloat },
         date: { type: GraphQLString },
+        description: { type: GraphQLString },
       },
       resolve(parent, args) {
-        let { payerId, amount, date } = args;
+        let { payerId, amount, date, description } = args;
         let expense = new Expense({
           payerId,
           amount,
-          date
+          date,
+          description
         });
         return expense.save();
       }
