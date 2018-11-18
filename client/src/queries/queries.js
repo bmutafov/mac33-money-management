@@ -18,9 +18,11 @@ const getExpensesQuery = gql`
       payer {
         id
         name
+        color
       }
       amount
       date
+      description
     }
   }
 `;
