@@ -72,8 +72,8 @@ const addUserMutation = gql`
 `;
 
 const addExpenseMutation = gql`
-  mutation AddExpense($payerId: ID!, $amount: Float!, $date: String!) {
-    addExpense(payerId: $payerId, amount: $amount, date: $date) {
+  mutation AddExpense($payerId: ID!, $amount: Float!, $date: String!, $description: String) {
+    addExpense(payerId: $payerId, amount: $amount, date: $date, description: $description) {
       id
       payer {
         id

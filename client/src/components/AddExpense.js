@@ -18,6 +18,7 @@ class AddExpense extends Component {
       payerName: '',
       payerId: 'default',
       amount: 0,
+      description: '',
     }
   }
 
@@ -31,6 +32,7 @@ class AddExpense extends Component {
         payerId: this.state.payerId,
         amount: parseFloat(this.state.amount),
         date: Math.round(new Date().getTime() / 1000).toString(),
+        description: this.state.description,
       },
       refetchQueries: [
         { query: getExpensesQuery },
@@ -65,8 +67,13 @@ class AddExpense extends Component {
           <tbody>
             <tr>
               <td>
-                <UserSelect label="Payer" helperText="Select who paid the expense" handler={(e) => { this.setState({ payerId: e.target.value }) }} />
+                <UserSelect
+                  label="Payer"
+                  helperText="Select who paid the expense"
+                  handler={(e) => { this.setState({ payerId: e.target.value }) }} />
               </td>
+            </tr>
+            <tr>
               <td>
                 <TextField
                   variant="outlined"
@@ -75,11 +82,29 @@ class AddExpense extends Component {
                   helperText="The total amount of the expense"
                   value={this.state.amount}
                   onChange={(e) => { this.setState({ amount: e.target.value }) }}
+                  style={{ width: 300 }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">€</InputAdornment>,
                   }}
                 />
               </td>
+            </tr>
+            <tr>
+              <td>
+                <TextField
+                  label="Expense description"
+                  placeholder="Description"
+                  helperText="Add short description about the expense"
+                  multiline
+                  rowsMax="4"
+                  margin="normal"
+                  variant="outlined"
+                  style={{ width: 300 }}
+                  onChange={(e) => { this.setState({ description: e.target.value }) }}
+                />
+              </td>
+            </tr>
+            <tr>
               <td><Button variant="contained" color="primary" type="submit"> Add Expense </Button></td>
             </tr>
           </tbody>

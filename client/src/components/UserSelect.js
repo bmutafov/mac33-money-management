@@ -20,6 +20,7 @@ class UserSelect extends Component {
         label={this.props.label}
         value={this.state.payerId}
         helperText={this.props.helperText}
+        style={{ width: 300 }}
         onChange={(e) => { this.props.handler(e); this.setState({ payerId: e.target.value }) }}
         margin="normal"
         variant="outlined"
