@@ -17,6 +17,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import DebtTable from './components/DebtTable';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -55,7 +56,7 @@ class App extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper>

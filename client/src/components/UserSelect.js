@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { getUsersQuery } from '../queries/queries';
 import { getUsersAsOptions } from '../helpers/helpers';
@@ -9,7 +10,7 @@ class UserSelect extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      payerId: '',
+      payerId: props.defaultValue || '',
     }
   }
 
@@ -20,11 +21,12 @@ class UserSelect extends Component {
         label={this.props.label}
         value={this.state.payerId}
         helperText={this.props.helperText}
-        style={{ width: 300 }}
+        style={{ width: this.props.width || 300 }}
         onChange={(e) => { this.props.handler(e); this.setState({ payerId: e.target.value }) }}
         margin="normal"
         variant="outlined"
       >
+        {this.props.includeDefault && <MenuItem key="any" value="any">Any</MenuItem>}
         {getUsersAsOptions(this.props)}
       </TextField>
     );

@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import ArrowRightAlt from '@material-ui/icons/ArrowForward';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from './InfoIcon';
 import colors from '../helpers/colors'
@@ -37,7 +37,7 @@ class DisplayDebts extends Component {
             return (
               <ListItem key={debt.id}>
                 <Avatar style={{ background: colors[debt.debtor.color || 0].hex }}>{debt.debtor.name.charAt(0)}</Avatar>
-                <ArrowRightAlt />
+                <ArrowForward />
                 <Avatar style={{ background: colors[debt.lender.color || 0].hex }}>{debt.lender.name.charAt(0)}</Avatar>
 
                 <ListItemText primary={`${debt.amount}€ `} secondary={`${debt.debtor.name} to ${debt.lender.name}`} />
