@@ -14,7 +14,7 @@ class AddUser extends Component {
     super(props);
     this.state = {
       name: '',
-      color: '',
+      color: 0,
     }
   }
 
