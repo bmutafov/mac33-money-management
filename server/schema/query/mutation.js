@@ -3,7 +3,8 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
-  GraphQLFloat
+  GraphQLFloat,
+  GraphQLInt,
 } = graphql;
 
 // Types
@@ -23,11 +24,13 @@ const Mutation = new GraphQLObjectType({
       type: UserType,
       args: {
         name: { type: GraphQLString },
+        color: { type: GraphQLInt },
       },
       async resolve(parent, args) {
-        let { name } = args;
+        let { name, color } = args;
         let user = new User({
-          name
+          name,
+          color
         });
         const otherUsers = await User.find({}).then(result => { return result.map(u => u.id) });
         const newUser = await user.save();

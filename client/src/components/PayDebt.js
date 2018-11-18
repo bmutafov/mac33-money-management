@@ -44,23 +44,42 @@ class PayDebt extends Component {
           <tbody>
             <tr>
               <td>
-                <UserSelect label="Debtor" helperText="Select who gives money" handler={(e) => { this.setState({ debtorId: e.target.value }) }} />
+                <UserSelect
+                  label="Debtor"
+                  helperText="Select who gives money"
+                  handler={(e) => { this.setState({ debtorId: e.target.value }) }}
+                />
               </td>
+            </tr>
+            <tr>
               <td>
-                <UserSelect label="Lender" helperText="Select who recieves money" handler={(e) => { this.setState({ lenderId: e.target.value }) }} />
+                <UserSelect
+                  label="Lender"
+                  helperText="Select who recieves money"
+                  handler={(e) => { this.setState({ lenderId: e.target.value }) }}
+                />
               </td>
-              <td><TextField
-                variant="outlined"
-                label="Amount"
-                margin="normal"
-                helperText="The amount of money given"
-                value={this.state.amount}
-                onChange={(e) => { this.setState({ amount: e.target.value }) }}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">€</InputAdornment>,
-                }}
-              /></td>
-              <td><Button variant="contained" color="primary" type="submit"> Pay Debt </Button></td>
+            </tr>
+            <tr>
+              <td>
+                <TextField
+                  variant="outlined"
+                  label="Amount"
+                  margin="normal"
+                  helperText="The amount of money given"
+                  value={this.state.amount}
+                  style={{ width: 300 }}
+                  onChange={(e) => { this.setState({ amount: e.target.value }) }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">€</InputAdornment>,
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Button variant="contained" color="primary" type="submit"> Pay Debt </Button>
+              </td>
             </tr>
           </tbody>
         </table>

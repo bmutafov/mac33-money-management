@@ -5,6 +5,7 @@ const {
   GraphQLID,
   GraphQLList,
   GraphQLFloat,
+  GraphQLInt,
 } = graphql;
 
 // Models
@@ -19,6 +20,7 @@ const UserType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
+    color: { type: GraphQLInt },
     expenses: {
       type: new GraphQLList(ExpenseType),
       resolve(parent, args) {
