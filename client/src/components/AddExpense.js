@@ -105,7 +105,9 @@ class AddExpense extends Component {
               </td>
             </tr>
             <tr>
-              <td><Button variant="contained" color="primary" type="submit"> Add Expense </Button></td>
+              <td style={{ textAlign: 'right' }}>
+                <Button variant="contained" color="primary" type="submit"> Add Expense </Button>
+              </td>
             </tr>
           </tbody>
         </table>

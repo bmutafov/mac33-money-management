@@ -62,7 +62,7 @@ class AddUser extends Component {
               </td>
             </tr>
             <tr>
-              <td>
+              <td style={{ textAlign: 'right' }}>
                 <Button variant="contained" color="primary" type="submit"> Add user </Button>
               </td>
             </tr>

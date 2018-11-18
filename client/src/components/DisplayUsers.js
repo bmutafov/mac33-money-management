@@ -7,6 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import colors from '../helpers/colors'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Import queries
 import { getUsersQuery } from '../queries/queries';
@@ -16,7 +17,13 @@ class DisplayUsers extends Component {
     let { data } = this.props;
     if (data.loading) {
       return (
-        <div> loading users... </div>
+        <CircularProgress size={40}
+          left={-20}
+          top={10}
+          status={'loading'}
+          style={{ marginLeft: '50%' }}
+          color="secondary"
+        />
       );
     } else {
       return data.users.map(user => {
@@ -38,7 +45,7 @@ class DisplayUsers extends Component {
 
   render() {
     return (
-      <List>
+      <List style={{ position: 'relative' }}>
         {this.displayUsers()}
       </List>
     );

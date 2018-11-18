@@ -77,7 +77,7 @@ class PayDebt extends Component {
               </td>
             </tr>
             <tr>
-              <td>
+              <td style={{ textAlign: 'right' }}>
                 <Button variant="contained" color="primary" type="submit"> Pay Debt </Button>
               </td>
             </tr>

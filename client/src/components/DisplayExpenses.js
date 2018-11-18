@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import colors from '../helpers/colors'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Import queries
 import { getExpensesQuery } from '../queries/queries';
@@ -36,7 +37,13 @@ class DisplayExpenses extends Component {
     let { data } = this.props;
     if (data.loading) {
       return (
-        <div> loading expenses... </div>
+        <CircularProgress size={40}
+          left={-20}
+          top={10}
+          status={'loading'}
+          style={{ marginLeft: '50%' }}
+          color="secondary"
+        />
       );
     } else {
       return data.expenses.map(expense => {
@@ -59,10 +66,7 @@ class DisplayExpenses extends Component {
   render() {
     return (
       <div className="display-expenses">
-        <Typography variant="h5" gutterBottom className="heading">
-          Prvioues expenses
-        </Typography>
-        <List>
+        <List style={{ position: 'relative' }}>
           {this.displayExpenses()}
         </List>
       </div>

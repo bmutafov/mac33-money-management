@@ -6,7 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(211, 211, 211);
+  background: rgb(231, 231, 231);
 }
 
 code {
@@ -25,4 +25,8 @@ code {
 
 .App {
   padding: 20px;
+}
+
+.centered {
+  justify-content: center;
 }

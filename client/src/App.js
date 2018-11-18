@@ -13,6 +13,10 @@ import DisplayDebts from './components/DisplayDebts';
 import DisplayMoneyOwed from './components/DisplayMoneyOwed';
 import PayDebt from './components/PayDebt';
 import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -20,15 +24,28 @@ const client = new ApolloClient({
 })
 
 class App extends Component {
+  state = {
+    value: 0,
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
   render() {
+    const { value } = this.state;
     return (
       <ApolloProvider client={client}>
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography variant="h6" color="inherit">
+              Mac & Cheese Money Management v2
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <div className="App">
-          <Grid container spacing={8}>
-            <Grid item xs={12}>
-              <Typography variant="h2" gutterBottom className="heading"> Mac & Cheese Money Management v2 </Typography>
-            </Grid>
-            <Grid item xs={6}>
+          <Grid container spacing={8} className="centered">
+            <Grid item xs={2} style={{ minWidth: 320 }}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper><DisplayUsers /></Paper>
@@ -36,24 +53,33 @@ class App extends Component {
                 <Grid item xs={12}>
                   <Paper><AddUser /></Paper>
                 </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={4}>
+              <Grid container spacing={8}>
+                <Grid item xs={12}>
+                  <Paper>
+                    <AppBar position="static" color="default">
+                      <Tabs value={value} onChange={this.handleChange} fullWidth>
+                        <Tab label="Total money owed" />
+                        <Tab label="Debts history" />
+                        <Tab label="Expenses history" />
+                      </Tabs>
+                    </AppBar>
+                    {value === 0 && <DisplayMoneyOwed />}
+                    {value === 1 && <DisplayDebts />}
+                    {value === 2 && <DisplayExpenses />}
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={2} style={{ minWidth: 320 }}>
+              <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper><AddExpense /></Paper>
                 </Grid>
                 <Grid item xs={12}>
                   <Paper><PayDebt /></Paper>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={6}>
-              <Grid container spacing={8}>
-                <Grid item xs={12}>
-                  <Paper><DisplayMoneyOwed /></Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Paper><DisplayDebts /></Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Paper><DisplayExpenses /></Paper>
                 </Grid>
               </Grid>
             </Grid>

@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ArrowRightAlt from '@material-ui/icons/ArrowForward';
 import Typography from '@material-ui/core/Typography';
 import colors from '../helpers/colors'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Import queries
 import { getMoneyOwedQuery } from '../queries/queries';
@@ -46,7 +47,13 @@ class DisplayMoneyOwed extends Component {
     let { data } = this.props;
     if (data.loading) {
       return (
-        <div> loading money owed... </div>
+        <CircularProgress size={40}
+          left={-20}
+          top={10}
+          status={'loading'}
+          style={{ marginLeft: '50%' }}
+          color="secondary"
+        />
       );
     } else {
       let parsedData = this.parseData(data.moneyOwed);
@@ -67,10 +74,7 @@ class DisplayMoneyOwed extends Component {
   render() {
     return (
       <div className="display-money-owed">
-        <Typography variant="h5" gutterBottom className="heading">
-          Total money owed
-        </Typography>
-        <List>
+        <List style={{ position: 'relative' }}>
           {this.displayMoneyOwed()}
         </List>
       </div>
