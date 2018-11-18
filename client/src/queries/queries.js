@@ -58,10 +58,12 @@ const getMoneyOwedQuery = gql`
       lender {
         id 
         name
+        color
       }
       debtor {
         id
         name
+        color
       }
       amount
     }

@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ArrowRightAlt from '@material-ui/icons/ArrowForward';
 import Typography from '@material-ui/core/Typography';
+import colors from '../helpers/colors'
 
 // Import queries
 import { getMoneyOwedQuery } from '../queries/queries';
@@ -52,9 +53,9 @@ class DisplayMoneyOwed extends Component {
       return parsedData.map(moneyOwed => {
         return (
           <ListItem key={moneyOwed.id}>
-            <Avatar>{moneyOwed.debtor.name.charAt(0)}</Avatar>
+            <Avatar style={{ background: colors[moneyOwed.debtor.color || 0].hex }}>{moneyOwed.debtor.name.charAt(0)}</Avatar>
             <ArrowRightAlt />
-            <Avatar>{moneyOwed.lender.name.charAt(0)}</Avatar>
+            <Avatar style={{ background: colors[moneyOwed.lender.color || 0].hex }}>{moneyOwed.lender.name.charAt(0)}</Avatar>
 
             <ListItemText primary={`${moneyOwed.amount}€ `} secondary={`${moneyOwed.debtor.name} to ${moneyOwed.lender.name}`} />
           </ListItem>
