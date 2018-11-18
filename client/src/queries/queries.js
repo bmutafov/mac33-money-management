@@ -6,6 +6,7 @@ const getUsersQuery = gql`
     users {
       id
       name
+      color
     }
   }
 `;
@@ -63,10 +64,11 @@ const getMoneyOwedQuery = gql`
 
 // MUTATIONS
 const addUserMutation = gql`
-  mutation AddUser($name: String!){
-    addUser(name: $name) {
+  mutation AddUser($name: String!, $color: Int!){
+    addUser(name: $name, color: $color) {
       id
       name
+      color
     }
   }
 `;

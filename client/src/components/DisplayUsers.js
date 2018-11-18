@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-// import FolderIcon from '@material-ui/icons/Folder';
+import colors from '../helpers/colors'
 
 // Import queries
 import { getUsersQuery } from '../queries/queries';
@@ -23,7 +23,7 @@ class DisplayUsers extends Component {
         return (
           <ListItem key={user.id}>
             <ListItemIcon>
-              <Avatar>{user.name.charAt(0)}</Avatar>
+              <Avatar style={{ background: colors[user.color || 0].hex }}>{user.name.charAt(0)}</Avatar>
             </ListItemIcon>
             <ListItemText
               primary={`${user.name}`}

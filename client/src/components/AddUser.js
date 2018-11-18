@@ -7,12 +7,14 @@ import TextField from '@material-ui/core/TextField';
 
 // queries
 import { addUserMutation, getUsersQuery } from '../queries/queries';
+import ColorSelect from './ColorSelect';
 
 class AddUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
+      color: '',
     }
   }
 
@@ -20,7 +22,8 @@ class AddUser extends Component {
     e.preventDefault();
     this.props.addUserMutation({
       variables: {
-        name: this.state.name
+        name: this.state.name,
+        color: parseInt(this.state.color),
       },
       refetchQueries: [
         { query: getUsersQuery },
@@ -40,12 +43,28 @@ class AddUser extends Component {
                   variant="outlined"
                   margin="dense"
                   helperText="The name of the user"
+                  style={{ width: 300 }}
                   onChange={(e) => this.setState({
                     name: e.target.value
                   })}
                 />
               </td>
-              <td><Button variant="contained" color="primary" type="submit"> Add user </Button></td>
+            </tr>
+            <tr>
+              <td>
+                <ColorSelect
+                  label="User color"
+                  helperText="Select representitive color"
+                  handler={(e) => this.setState({
+                    color: e.target.value,
+                  })}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Button variant="contained" color="primary" type="submit"> Add user </Button>
+              </td>
             </tr>
           </tbody>
         </table>
