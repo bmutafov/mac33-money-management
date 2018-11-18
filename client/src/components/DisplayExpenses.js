@@ -8,15 +8,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Info from '@material-ui/icons/Info';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import colors from '../helpers/colors'
 
 // Import queries
 import { getExpensesQuery } from '../queries/queries';
 import { timestampToDate } from '../helpers/helpers';
+import InfoIcon from './InfoIcon';
 
 class DisplayExpenses extends Component {
   constructor(props) {
@@ -52,23 +49,7 @@ class DisplayExpenses extends Component {
               primary={`${expense.payer.name} paid ${expense.amount}€`}
               secondary={timestampToDate(expense.date)}
             />
-            <ClickAwayListener onClickAway={this.handleTooltipClose}>
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                onClose={this.handleTooltipClose}
-                open={this.state.open}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title={expense.description}
-              >
-                <IconButton color="primary" onClick={this.handleTooltipOpen}>
-                  <Info />
-                </IconButton>
-              </Tooltip>
-            </ClickAwayListener>
+            <InfoIcon title={expense.description} />
           </ListItem>
         )
       });

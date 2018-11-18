@@ -34,13 +34,17 @@ const getDebtsQuery = gql`
       lender {
         id
         name
+        color
       }
       debtor {
         id
         name
+        color
       }
       expense {
         date
+        description
+        amount
       }
       amount
     }
