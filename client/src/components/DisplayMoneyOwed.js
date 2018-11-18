@@ -19,26 +19,16 @@ class DisplayMoneyOwed extends Component {
     let dataCpy = [...data];
     let res = [];
     for (let i = 0; i < dataCpy.length; i++) {
-      // make a copy and find the owed back money
       let current = dataCpy[i];
       let moneyOwedBack = dataCpy.find(m => m.lender.id === current.debtor.id && m.debtor.id === current.lender.id) || null;
-
-      // calculate the total amount and who owes to who
-      // and if the money owed back amount is greater skip and do the action
-      // on the other element
-      if (moneyOwedBack === null) {
-        res.push(current);
-      } else if (current.amount > moneyOwedBack.amount) {
+      let giveAmount = (current.amount - moneyOwedBack.amount);
+      if (giveAmount > 0)
         res.push({
           id: current.id,
           lender: current.lender,
           debtor: current.debtor,
-          amount: Math.round((current.amount - moneyOwedBack.amount) * 100) / 100,
+          amount: Math.round(giveAmount * 100) / 100,
         });
-
-        // delete other element from copy to avoid doubling the result element
-        dataCpy.splice(dataCpy.indexOf(moneyOwedBack), 1);
-      }
     }
     return res;
   }

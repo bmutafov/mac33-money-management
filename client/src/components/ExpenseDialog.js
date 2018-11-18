@@ -72,15 +72,15 @@ class ExpenseDialog extends Component {
   addDebts = (result) => {
     let expense = result.data.addExpense;
     let users = this.payingUsers;
-    let partialTotal = this.sumPartialAmounts(users, 'amount');
-    console.log(partialTotal);
-    let remainder = parseFloat(this.props.formState.amount) - partialTotal;
+
     let onlyPaying = [];
     for (let [key, value] of Object.entries(users)) {
-      console.log(key, value);
-      if (value.checked && key != this.props.formState.payerId) onlyPaying.push({ id: key, amount: value.amount });
+      if (value.checked) onlyPaying.push({ id: key, amount: value.amount });
     }
-    console.log(this.payingUsers, onlyPaying);
+
+    let partialTotal = this.sumPartialAmounts(onlyPaying, 'amount');
+    console.log("Partial Total: ", partialTotal);
+    let remainder = parseFloat(this.props.formState.amount) - partialTotal;
     if (remainder < 0) {
       console.error("remained < 0");
       return;
@@ -88,18 +88,19 @@ class ExpenseDialog extends Component {
     let i = 0;
     onlyPaying.forEach(user => {
       i++;
-      this.props.addDebtMutation({
-        variables: {
-          lenderId: expense.payer.id,
-          debtorId: user.id,
-          expenseId: expense.id,
-          amount: Math.round((user.amount + remainder / onlyPaying.length) * 100) / 100,
-        },
-        refetchQueries: i === onlyPaying.length ? [
-          { query: getDebtsQuery },
-          { query: getMoneyOwedQuery },
-        ] : undefined,
-      });
+      if (user.id !== this.props.formState.payerId)
+        this.props.addDebtMutation({
+          variables: {
+            lenderId: expense.payer.id,
+            debtorId: user.id,
+            expenseId: expense.id,
+            amount: Math.round((user.amount + remainder / onlyPaying.length) * 100) / 100,
+          },
+          refetchQueries: i === onlyPaying.length ? [
+            { query: getDebtsQuery },
+            { query: getMoneyOwedQuery },
+          ] : undefined,
+        });
     });
     this.props.handleClose();
   }
