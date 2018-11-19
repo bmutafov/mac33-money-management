@@ -19,6 +19,7 @@ mongoose.connection
   .once('open', () => console.log('Connected established to mLab database. Can you believe it?'))
   .on('error', (e) => console.log('Connection error!', e));
 
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 // set up graphiql
 app.use('/graphiql', graphqlHTTP({
