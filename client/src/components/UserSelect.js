@@ -24,7 +24,7 @@ class UserSelect extends Component {
         style={{ width: this.props.width || 300 }}
         onChange={(e) => { this.props.handler(e); this.setState({ payerId: e.target.value }) }}
         margin="normal"
-        variant="outlined"
+        variant={this.props.variant || "outlined"}
       >
         {this.props.includeDefault && <MenuItem key="any" value="any">Any</MenuItem>}
         {getUsersAsOptions(this.props)}

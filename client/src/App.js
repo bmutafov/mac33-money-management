@@ -60,7 +60,7 @@ class App extends Component {
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper>
-                    <AppBar position="static" color="default">
+                    <AppBar position="static" color="primary">
                       <Tabs value={value} onChange={this.handleChange} fullWidth>
                         <Tab label="Total money owed" />
                         <Tab label="Debts history" />
