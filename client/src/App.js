@@ -47,7 +47,7 @@ class App extends Component {
         </AppBar>
         <div className="App">
           <Grid container spacing={8} className="centered">
-            <Grid item xs={2} style={{ minWidth: 320 }}>
+            <Grid item xs={2} style={{ minWidth: 315 }}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper><DisplayUsers /></Paper>
@@ -73,7 +73,7 @@ class App extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={2} style={{ minWidth: 320 }}>
+            <Grid item xs={2} style={{ minWidth: 315 }}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
                   <Paper><AddExpense /></Paper>

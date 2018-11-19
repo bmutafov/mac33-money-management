@@ -2,7 +2,9 @@ const graphql = require('graphql');
 const {
   GraphQLObjectType,
   GraphQLID,
-  GraphQLList } = graphql;
+  GraphQLList,
+  GraphQLInt,
+} = graphql;
 
 // Types
 const { UserType, ExpenseType, DebtType, MoneyOwedType } = require('../types/types');
@@ -42,8 +44,10 @@ const RootQuery = new GraphQLObjectType({
     },
     expenses: {
       type: new GraphQLList(ExpenseType),
-      resolve() {
-        return Expense.find({});
+      args: { limit: { type: GraphQLInt } },
+      resolve(parent, args) {
+        let { limit = null } = args;
+        return Expense.find({}).sort({ date: 'desc' }).limit(limit);
       }
     },
     users: {
