@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { graphql } from 'react-apollo'
 import { getWeekExpenses } from '../queries/queries';
 import { weekdaysBeforeToday, timestampToSimpleDate, sumPartialAmounts } from '../helpers/helpers';
 import { Bar } from 'react-chartjs-2';
+import { Typography } from '@material-ui/core';
 
 const charOptions = {
   scales: {
@@ -57,9 +58,12 @@ class WeeklySpent extends Component {
 
   render = () => {
     return (
-      <div>
+      <Fragment>
+        <Typography variant="display1" style={{ textAlign: 'center' }}>
+          Weekly money spent
+        </Typography>
         <Bar data={this.getWeeklyData()} options={charOptions} ref='ca' width={600} height={300} redraw />
-      </div>
+      </Fragment>
     )
   }
 }
