@@ -20,6 +20,14 @@ const getExpensesQuery = gql`
         name
         color
       }
+      debts {
+        debtor {
+          id
+          name
+          color
+        }
+        amount
+      }
       amount
       date
       description

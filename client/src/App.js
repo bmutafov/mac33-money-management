@@ -18,6 +18,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import DebtTable from './components/DebtTable';
+import ExpansionExpenses from './components/ExpansionExpenses';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -63,13 +64,11 @@ class App extends Component {
                     <AppBar position="static" color="primary">
                       <Tabs value={value} onChange={this.handleChange} fullWidth>
                         <Tab label="Total money owed" />
-                        <Tab label="Debts history" />
                         <Tab label="Expenses history" />
                       </Tabs>
                     </AppBar>
                     {value === 0 && <DisplayMoneyOwed />}
-                    {value === 1 && <DisplayDebts />}
-                    {value === 2 && <DisplayExpenses />}
+                    {value === 1 && <ExpansionExpenses />}
                   </Paper>
                 </Grid>
               </Grid>
