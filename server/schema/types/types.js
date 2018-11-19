@@ -66,6 +66,12 @@ const ExpenseType = new GraphQLObjectType({
     amount: { type: GraphQLFloat },
     date: { type: GraphQLString },
     description: { type: GraphQLString },
+    debts: {
+      type: new GraphQLList(DebtType),
+      resolve(parent, args) {
+        return Debt.find({ expenseId: parent.id });
+      }
+    }
   })
 });
 
