@@ -47,7 +47,9 @@ class WeeklySpent extends Component {
         datasets: [
           {
             label: 'Weekly expenses',
-            backgroundColor: 'rgb(255, 110, 48)',
+            backgroundColor: 'rgba(255, 110, 48, 0.5)',
+            borderColor: 'rgba(255, 110, 48, 1)',
+            borderWidth: 1,
             data: this.getExpenseAmounts(mappedDates, 7)
           }
         ]

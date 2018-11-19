@@ -5,7 +5,7 @@ import { graphql, compose } from 'react-apollo';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
-
+import Receipt from '@material-ui/icons/Receipt';
 
 
 // queries
@@ -13,6 +13,7 @@ import { getUsersQuery, addExpenseMutation, addDebtMutation, getMoneyOwedQuery }
 
 import UserSelect from './UserSelect';
 import ExpenseDialog from './ExpenseDialog';
+import { FormGroup, Typography } from '@material-ui/core';
 
 class AddExpense extends Component {
   payingUsers = [];
@@ -41,54 +42,46 @@ class AddExpense extends Component {
   render = () => {
     return (
       <form className="add-expense">{/*onSubmit={this.submitForm.bind(this)}*/}
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <UserSelect
-                  label="Payer"
-                  helperText="Select who paid the expense"
-                  handler={(e) => { this.setState({ payerId: e.target.value }) }} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <TextField
-                  variant="outlined"
-                  label="Amount"
-                  margin="normal"
-                  helperText="The total amount of the expense"
-                  value={this.state.amount}
-                  onChange={(e) => { this.setState({ amount: e.target.value }) }}
-                  style={{ width: 300 }}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">€</InputAdornment>,
-                  }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <TextField
-                  label="Expense description"
-                  placeholder="Description"
-                  helperText="Add short description about the expense"
-                  multiline
-                  rowsMax="4"
-                  margin="normal"
-                  variant="outlined"
-                  style={{ width: 300 }}
-                  onChange={(e) => { this.setState({ description: e.target.value }) }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ textAlign: 'right' }}>
-                <Button variant="contained" color="primary" onClick={this.handleClickOpen} > Add Expense </Button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <FormGroup style={{ padding: 3 }}>
+          <Typography variant="h5" style={{ textAlign: 'center' }}>
+            ADD EXPENSE
+        </Typography>
+          <UserSelect
+            label="Payer"
+            helperText="Select who paid the expense"
+            handler={(e) => { this.setState({ payerId: e.target.value }) }} />
+
+          <TextField
+            variant="outlined"
+            label="Amount"
+            margin="normal"
+            helperText="The total amount of the expense"
+            value={this.state.amount}
+            onChange={(e) => { this.setState({ amount: e.target.value }) }}
+            style={{ width: 300 }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">€</InputAdornment>,
+            }}
+          />
+
+          <TextField
+            label="Expense description"
+            placeholder="Description"
+            helperText="Add short description about the expense"
+            multiline
+            rowsMax="4"
+            margin="normal"
+            variant="outlined"
+            style={{ width: 300 }}
+            onChange={(e) => { this.setState({ description: e.target.value }) }}
+          />
+
+          <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+            Add Expense
+            <Receipt style={{ marginLeft: 10 }} />
+          </Button>
+
+        </FormGroup>
         <ExpenseDialog
           formState={this.state}
           handleClose={this.handleClose}

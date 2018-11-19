@@ -42,7 +42,9 @@ class MonthlySpent extends Component {
         datasets: [
           {
             label: 'Monthly expenses',
-            backgroundColor: 'rgb(255, 110, 48)',
+            backgroundColor: 'rgba(124, 144, 255, 0.4)',
+            borderColor: 'rgba(124, 144, 255, 1)',
+            borderWidth: 1,
             data: this.getExpenseAmounts(expenses)
           }
         ]
