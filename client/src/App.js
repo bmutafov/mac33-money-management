@@ -19,6 +19,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import DebtTable from './components/DebtTable';
 import ExpansionExpenses from './components/ExpansionExpenses';
+import WeeklySpent from './components/WeeklySpent';
+import { getDateXDaysAgo } from './helpers/helpers';
 
 // apollo client setup
 const client = new ApolloClient({
@@ -69,6 +71,11 @@ class App extends Component {
                     </AppBar>
                     {value === 0 && <DisplayMoneyOwed />}
                     {value === 1 && <ExpansionExpenses />}
+                  </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                  <Paper>
+                    <WeeklySpent after={getDateXDaysAgo(7)} />
                   </Paper>
                 </Grid>
               </Grid>

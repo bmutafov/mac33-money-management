@@ -7,9 +7,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { FormHelperText, List } from '@material-ui/core';
 import { graphql, compose } from 'react-apollo';
-import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
+import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery, getWeekExpenses } from '../queries/queries';
 import SplitListItem from './SplitListItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { sumPartialAmounts } from '../helpers/helpers';
 
 class ExpenseDialog extends Component {
   payingUsers = [];
@@ -63,12 +64,6 @@ class ExpenseDialog extends Component {
     }
   }
 
-  sumPartialAmounts = (items, prop) => {
-    return items.reduce((a, b) => {
-      return parseFloat(a) + parseFloat(b[prop]);
-    }, 0);
-  };
-
   addDebts = (result) => {
     let expense = result.data.addExpense;
     let users = this.payingUsers;
@@ -78,7 +73,7 @@ class ExpenseDialog extends Component {
       if (value.checked) onlyPaying.push({ id: key, amount: value.amount });
     }
 
-    let partialTotal = this.sumPartialAmounts(onlyPaying, 'amount');
+    let partialTotal = sumPartialAmounts(onlyPaying, 'amount');
     console.log("Partial Total: ", partialTotal);
     let remainder = parseFloat(this.props.formState.amount) - partialTotal;
     if (remainder < 0) {
@@ -99,6 +94,7 @@ class ExpenseDialog extends Component {
           refetchQueries: i === onlyPaying.length ? [
             { query: getDebtsQuery },
             { query: getMoneyOwedQuery },
+            { query: getExpensesQuery },
           ] : undefined,
         });
     });
@@ -116,7 +112,7 @@ class ExpenseDialog extends Component {
         description: this.props.formState.description,
       },
       refetchQueries: [
-        { query: getExpensesQuery },
+        { query: getWeekExpenses },
       ]
     }).then((result) => {
       this.addDebts(result);
@@ -160,4 +156,5 @@ export default compose(
   graphql(addExpenseMutation, { name: 'addExpenseMutation' }),
   graphql(addDebtMutation, { name: 'addDebtMutation' }),
   graphql(getMoneyOwedQuery, { name: 'getMoneyOwedQuery' }),
+  graphql(getWeekExpenses, { name: 'getWeekExpenses' }),
 )(ExpenseDialog);

@@ -35,6 +35,15 @@ const getExpensesQuery = gql`
   }
 `;
 
+const getWeekExpenses = gql`
+  query($before: String, $after: String) {
+    expenses(before: $before, after: $after) {
+      date
+      amount
+    }
+  }
+`;
+
 const getDebtsQuery = gql`
   {
     debts {
@@ -129,6 +138,7 @@ export {
   getExpensesQuery,
   getDebtsQuery,
   getMoneyOwedQuery,
+  getWeekExpenses,
 
   // MUTATIONS
   addUserMutation,

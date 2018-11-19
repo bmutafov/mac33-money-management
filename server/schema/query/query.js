@@ -4,6 +4,7 @@ const {
   GraphQLID,
   GraphQLList,
   GraphQLInt,
+  GraphQLString,
 } = graphql;
 
 // Types
@@ -44,10 +45,10 @@ const RootQuery = new GraphQLObjectType({
     },
     expenses: {
       type: new GraphQLList(ExpenseType),
-      args: { limit: { type: GraphQLInt } },
+      args: { limit: { type: GraphQLInt }, before: { type: GraphQLString }, after: { type: GraphQLString }, },
       resolve(parent, args) {
-        let { limit = null } = args;
-        return Expense.find({}).sort({ date: 'desc' }).limit(limit);
+        let { limit = null, before = new Date().getTime() / 1000, after = new Date(1).getTime() / 1000 } = args;
+        return Expense.find({}).where({ date: { $gt: after, $lt: before } }).sort({ date: 'desc' }).limit(limit);
       }
     },
     users: {
