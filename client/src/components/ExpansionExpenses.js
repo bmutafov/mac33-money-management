@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

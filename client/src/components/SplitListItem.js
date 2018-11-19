@@ -4,7 +4,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import { ListItem, Avatar, ListItemSecondaryAction } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import colors from '../helpers/colors';
 import Add from '@material-ui/icons/Add'

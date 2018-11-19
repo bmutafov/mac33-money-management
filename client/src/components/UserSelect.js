@@ -2,15 +2,43 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from '@material-ui/core/Avatar';
+import colors from '../helpers/colors'
 
 import { getUsersQuery } from '../queries/queries';
-import { getUsersAsOptions } from '../helpers/helpers';
 
 class UserSelect extends Component {
   constructor(props) {
     super(props);
     this.state = {
       payerId: props.defaultValue || '',
+    }
+  }
+  getUsersAsOptions = () => {
+    let { getUsersQuery } = this.props;
+    if (getUsersQuery.loading) {
+      return (<MenuItem>loading users...</MenuItem>);
+    } else {
+      return getUsersQuery.users.map(user => {
+        return (
+          <MenuItem key={user.id} value={user.id}>
+            <Avatar
+              style={
+                {
+                  background: colors[user.color || 0].hex,
+                  width: 24,
+                  height: 24,
+                  float: 'left',
+                  fontSize: 14,
+                  marginRight: 10
+                }
+              }>
+              {user.name.charAt(0)}
+            </Avatar>
+            {user.name}
+          </MenuItem>
+        )
+      });
     }
   }
 
@@ -27,7 +55,7 @@ class UserSelect extends Component {
         variant={this.props.variant || "outlined"}
       >
         {this.props.includeDefault && <MenuItem key="any" value="any">Any</MenuItem>}
-        {getUsersAsOptions(this.props)}
+        {this.getUsersAsOptions(this.props)}
       </TextField>
     );
   }

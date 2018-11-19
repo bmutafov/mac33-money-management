@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import { getWeekExpenses } from '../queries/queries';
-import { weekdaysBeforeToday, timestampToSimpleDate, sumPartialAmounts, getDateXDaysAgo, getFirstWeekDay } from '../helpers/helpers';
+import { sumPartialAmounts } from '../helpers/helpers';
 import { Bar } from 'react-chartjs-2';
 
 const charOptions = {
@@ -14,16 +14,9 @@ const charOptions = {
   }
 };
 
-const getValidExpense = (amount, date) => {
-  return {
-    amount: amount,
-    date: timestampToSimpleDate(date)
-  }
-}
 
 class MonthlySpent extends Component {
-  getExpenseAmounts = (obj, sinceDate) => {
-    console.log('this.props :', this.props);
+  getExpenseAmounts = (obj) => {
     let dateSpans = this.props.after;
     let result = [];
     for (let i = 0; i < dateSpans.length; i++) {
@@ -34,7 +27,6 @@ class MonthlySpent extends Component {
       let amount = sumPartialAmounts(currWeek, 'amount');
       result.push(amount);
     }
-    console.log('result :', result);
     return result;
   }
 
@@ -70,10 +62,9 @@ class MonthlySpent extends Component {
 export default graphql(getWeekExpenses, {
   name: 'getWeekExpenses',
   options: (props) => {
-    console.log('props :', props);
     return {
       variables: {
-        after: new String(new Date(props.after[0].start).getTime() / 1000),
+        after: String(new Date(props.after[0].start).getTime() / 1000),
       }
     }
   }

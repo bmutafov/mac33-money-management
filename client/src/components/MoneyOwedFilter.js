@@ -1,9 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { graphql } from 'react-apollo';
 import { getUsersQuery } from '../queries/queries';
-import { Avatar, AppBar } from '@material-ui/core';
-import colors from '../helpers/colors'
-import { withStyles } from "@material-ui/core/styles";
+import { AppBar } from '@material-ui/core';
 import UserSelect from './UserSelect';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import Toolbar from '@material-ui/core/Toolbar';

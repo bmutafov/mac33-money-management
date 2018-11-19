@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 
 
 // queries
-import { getUsersQuery, addExpenseMutation, getExpensesQuery, addDebtMutation, getDebtsQuery, getMoneyOwedQuery } from '../queries/queries';
+import { getUsersQuery, addExpenseMutation, addDebtMutation, getMoneyOwedQuery } from '../queries/queries';
 
 import UserSelect from './UserSelect';
 import ExpenseDialog from './ExpenseDialog';
