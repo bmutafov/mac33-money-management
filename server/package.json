@@ -10,11 +10,14 @@
   "author": "Boris Mutafov",
   "license": "ISC",
   "dependencies": {
+    "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
-    "mongoose": "^5.3.12"
+    "mongoose": "^5.3.12",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1"
   }
 }

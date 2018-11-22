@@ -5,6 +5,8 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
   name: String,
   color: Number,
+  fbId: String,
+  picture: String,
 });
 
 module.exports = mongoose.model('User', UserSchema);
