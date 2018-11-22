@@ -7,7 +7,7 @@ import GridSystem from './components/GridSystem';
 
 // apollo client setup
 const client = new ApolloClient({
-  uri: 'http://localhost:8080/graphiql'
+  uri: window.location.origin + '/graphql'
 })
 
 class App extends Component {

@@ -5,6 +5,7 @@ mongoose.set('useFindAndModify', false);
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -22,10 +23,14 @@ mongoose.connection
 app.use(express.static(path.join(__dirname, 'client/build')))
 
 // set up graphiql
-app.use('/graphiql', graphqlHTTP({
+app.use('/graphql', graphqlHTTP({
+  schema,
+}));
+
+app.use('/secretgraphiql', graphqlHTTP({
   schema,
   graphiql: true,
-}));
+}))
 
 
 // open a listening port
